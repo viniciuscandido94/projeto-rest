@@ -1,0 +1,5 @@
+.idea/
+logs/
+projeto.iml
+target/
+src/main/resources/static/fotos/

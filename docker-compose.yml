@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  projeto-rest:
+    image: projeto-rest-app
+    ports: 
+      - 8080:8080
+      - 8000:8000
+    container_name: ProjetoAPI
+    depends_on:
+      - projeto-banco
+    links:
+      - projeto-banco
+    networks:
+      - postgres-compose-network
+
+  projeto-banco:
+    image: postgres:10.4
+    volumes:
+      - "/var/lib/postgresql:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_DB=dbProjeto
+      - POSTGRES_USER=****
+      - POSTGRES_PASSWORD=****
+    container_name: ProjetoBanco
+    ports:
+      - 15432:5432
+    networks:
+      - postgres-compose-network
+    restart: unless-stopped
+
+  projeto-pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=****
+      - PGADMIN_DEFAULT_PASSWORD=****
+    container_name: ProjetoPGAdmin4
+    depends_on:
+      - projeto-banco
+    ports:
+      - 16543:80
+    networks:
+      - postgres-compose-network
+
+networks:
+  postgres-compose-network:
+    driver: bridge
